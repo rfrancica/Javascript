@@ -1,4 +1,24 @@
 function startPipeline(user_form) {
+    let selectForm = this.document.forms['dino-compare'];
+    let temporary_object = {
+        name: selectForm['name'].value,
+        feet: selectForm['feet'].value,
+        inches: selectForm['inches'].value,
+        weight: selectForm['weight'].value,
+        diet: selectForm['diet'].value
+    };
+    let tiles = this.document.getElementById("tiles");
+    if (tiles.style.display === "none") {
+        tiles.style.display = "block";
+    } else {
+        tiles.style.display = "none";
+    }
+    let form = this.document.getElementById("dino-compare");
+    if (form.style.display === "none") {
+        form.style.display = "block";
+    } else {
+        form.style.display = "none";
+    }
     // Create Dino Constructor
 
 
@@ -30,14 +50,3 @@ function startPipeline(user_form) {
 }
 
 // On button click, prepare and display infographic
-window.document.getElementById('btn').addEventListener("click", function() {
-    var selectForm = document.forms['dino-compare'];
-    let temporary_object = {
-        name: selectForm['name'].value,
-        feet: selectForm['feet'].value,
-        inches: selectForm['inches'].value,
-        weight: selectForm['weight'].value,
-        diet: selectForm['diet'].value
-    };
-    startPipeline(temporary_object)
-});
