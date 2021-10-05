@@ -7,17 +7,22 @@ function startPipeline(user_form) {
         weight: selectForm['weight'].value,
         diet: selectForm['diet'].value
     };
-    let tiles = this.document.getElementById("tiles");
-    if (tiles.style.display === "none") {
-        tiles.style.display = "block";
-    } else {
-        tiles.style.display = "none";
-    }
     let form = this.document.getElementById("dino-compare");
     if (form.style.display === "none") {
         form.style.display = "block";
     } else {
         form.style.display = "none";
+    }
+    let grid = this.document.getElementById("grid");
+    if (grid.style.display === "none") {
+        grid.style.display = "flex";
+        grid.style.background= "#fff url(images/tracks.png) no-repeat";
+        grid.style.backgroundSize= 'cover';
+        grid.style.margin= "2em";
+        grid.style.boxShadow= "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)";
+        grid.style.flexWrap= "wrap";
+    } else {
+        grid.style.display = "none";
     }
     // Create Dino Constructor
 
