@@ -118,9 +118,16 @@ function startPipeline() {
     let dinos_array = data.Dinos.map(DinoConstructor)
 
     // Create Human Object
-    let human = {
-        image: 'images/human.png',
+    function Human(userData) {
+        return {
+            image: 'images/human.png',
+            name: userData.name,
+            heigth: userData.height,
+            weight: userData.weight,
+            diet: userData.diet
+        }
     }
+    let human = Human(userData)
 
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches.
