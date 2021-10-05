@@ -149,6 +149,8 @@ function startPipeline() {
         if (i === 4) {
             grid.innerHTML += '<div class="grid-item">' + i + '<img src=' + human.image + '></div>'
         }
-        grid.innerHTML += '<div class="grid-item">' + i + '<img src=' + dinos_array[i].image + '></div>'
+        else {
+            grid.innerHTML += '<div class="grid-item">' + i + '<img src=' + dinos_array[i].image + '></div>'
+        }
     }
 }
