@@ -146,16 +146,21 @@ function startPipeline() {
 
     // Add tiles to DOM
     let grid = this.document.getElementById("grid");
+    // loop over tile indexes
     for (let i = 0; i <= dinos_array.length + 1; i++) {
+        let tile_display_number = i + 1;
+        // middle tile has to be human tile
         if (i === 4) {
-            grid.innerHTML += '<div class="grid-item">' + i + '<img src=' + human.image + '></div>'
+            grid.innerHTML += '<div class="grid-item">' + tile_display_number + '<img src=' + human.image + '></div>'
         } else {
+            // if looping through first four tiles
             if (i < 4) {
-                grid.innerHTML += '<div class="grid-item">' + i + '<img src=' + dinos_array[i].image + '></div>'
+                grid.innerHTML += '<div class="grid-item">' + tile_display_number + '<img src=' + dinos_array[i].image + '></div>'
             }
             else {
+                // specify dinos array index
                 let j = i-1;
-                grid.innerHTML += '<div class="grid-item">' + i + '<img src=' + dinos_array[j].image + '></div>'
+                grid.innerHTML += '<div class="grid-item">' + tile_display_number + '<img src=' + dinos_array[j].image + '></div>'
             }
         }
     }
