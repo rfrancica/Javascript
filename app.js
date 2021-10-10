@@ -127,6 +127,7 @@ function startPipeline() {
             diet: userData.diet
         }
     }
+
     let human = Human(userData)
 
     // Create Dino Compare Method 1
@@ -148,9 +149,14 @@ function startPipeline() {
     for (let i = 0; i <= dinos_array.length + 1; i++) {
         if (i === 4) {
             grid.innerHTML += '<div class="grid-item">' + i + '<img src=' + human.image + '></div>'
-        }
-        else {
-            grid.innerHTML += '<div class="grid-item">' + i + '<img src=' + dinos_array[i].image + '></div>'
+        } else {
+            if (i < 4) {
+                grid.innerHTML += '<div class="grid-item">' + i + '<img src=' + dinos_array[i].image + '></div>'
+            }
+            else {
+                let j = i-1;
+                grid.innerHTML += '<div class="grid-item">' + i + '<img src=' + dinos_array[j].image + '></div>'
+            }
         }
     }
 }
