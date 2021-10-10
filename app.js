@@ -1,3 +1,13 @@
+function DisplayFacts(item) {
+    if (item.species === 'Pigeon') {
+        return "All birds are considered dinosaurs."
+    }
+    else {
+        let factKeys = ["weight", "height", "diet", "where", "when", "fact"];
+        let factKey = factKeys[Math.floor(Math.random()*factKeys.length)];
+        return item.species + '\n ' + factKey + ': ' + item[factKey]
+    }
+}
 function startPipeline() {
     let data = {
         "Dinos": [
@@ -148,20 +158,19 @@ function startPipeline() {
     let grid = this.document.getElementById("grid");
     // loop over tile indexes
     for (let i = 0; i <= dinos_array.length + 1; i++) {
-        let tile_display_number = i + 1;
         // middle tile has to be human tile
         if (i === 4) {
-            grid.innerHTML += '<div class="grid-item">' + tile_display_number + '<img src=' + human.image + '></div>'
-        } else {
-            // if looping through first four tiles
-            if (i < 4) {
-                grid.innerHTML += '<div class="grid-item">' + tile_display_number + '<img src=' + dinos_array[i].image + '></div>'
-            }
-            else {
-                // specify dinos array index
-                let j = i-1;
-                grid.innerHTML += '<div class="grid-item">' + tile_display_number + '<img src=' + dinos_array[j].image + '></div>'
-            }
+            grid.innerHTML += '<div class="grid-item">' + human.name + '<img src=' + human.image + '></div>'
+        }
+        else if (i < 4) {
+            let tile_content = DisplayFacts(dinos_array[i]);
+            grid.innerHTML += '<div class="grid-item">' + tile_content + '<img src=' + dinos_array[i].image + '></div>'
+        }
+        else {
+            // specify dinos array index
+            let j = i - 1;
+            let tile_content = DisplayFacts(dinos_array[j]);
+            grid.innerHTML += '<div class="grid-item">' + tile_content + '<img src=' + dinos_array[j].image + '></div>'
         }
     }
 }
