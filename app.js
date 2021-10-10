@@ -1,13 +1,53 @@
-function DisplayFacts(item) {
-    if (item.species === 'Pigeon') {
-        return "All birds are considered dinosaurs."
+function compareDiet(dinoItem, humanItem) {
+    let return_string;
+    if (dinoItem.diet.toLowerCase() === humanItem.diet.toLowerCase()) {
+        return_string = 'Like you, ' + dinoItem.species + ' is a ' + dinoItem.diet;
+    } else {
+        return_string = 'Unlike you, ' + dinoItem.species + ' is a ' + dinoItem.diet + ' while you are ' + humanItem.diet;
     }
-    else {
+    return return_string
+}
+
+function compareWeight(dinoItem, humanItem) {
+    let return_string;
+    if (dinoItem.weight === humanItem.weight) {
+        return_string = 'Like you, ' + dinoItem.species + ' weighs: ' + dinoItem.weight + ' lbs';
+    } else {
+        return_string = 'Unlike you, ' + dinoItem.species + ' weighs: ' + dinoItem.weight + ' lbs while you weight: ' + humanItem.weight + ' lbs';
+    }
+    return return_string
+}
+
+function compareHeight(dinoItem, humanItem) {
+    let return_string;
+    let conversionAlpha = 0.0833;
+    if (dinoItem.height === humanItem.height) {
+        return_string = 'Like you, ' + dinoItem.species + ' is: ' + dinoItem.height + ' feet tall';
+    } else {
+        return_string = 'Unlike you, ' + dinoItem.species + ' is: ' + dinoItem.height + ' feet tall while you are ' + humanItem.height + ' feet tall';
+    }
+    return return_string
+}
+
+
+function DisplayFacts(dinoItem, humanItem) {
+    if (dinoItem.species === 'Pigeon') {
+        return "All birds are considered dinosaurs."
+    } else {
         let factKeys = ["weight", "height", "diet", "where", "when", "fact"];
-        let factKey = factKeys[Math.floor(Math.random()*factKeys.length)];
-        return item.species + '\n ' + factKey + ': ' + item[factKey]
+        let factKey = factKeys[Math.floor(Math.random() * factKeys.length)];
+        if (factKey === 'weight') {
+            return compareWeight(dinoItem, humanItem)
+        } else if (factKey === 'height') {
+            return compareHeight(dinoItem, humanItem)
+        } else if (factKey === 'diet') {
+            return compareDiet(dinoItem, humanItem)
+        } else {
+            return dinoItem.species + '\n ' + factKey + ': ' + dinoItem[factKey]
+        }
     }
 }
+
 function startPipeline() {
     let data = {
         "Dinos": [
@@ -96,7 +136,7 @@ function startPipeline() {
         let diet = document.getElementById('diet').value;
         return {
             name: name,
-            heigth: height,
+            height: height,
             weight: weight,
             diet: diet
         };
@@ -132,7 +172,7 @@ function startPipeline() {
         return {
             image: 'images/human.png',
             name: userData.name,
-            heigth: userData.height,
+            height: userData.height,
             weight: userData.weight,
             diet: userData.diet
         }
@@ -140,36 +180,21 @@ function startPipeline() {
 
     let human = Human(userData)
 
-    // Create Dino Compare Method 1
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
-
-    // Create Dino Compare Method 2
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
-
-    // Create Dino Compare Method 3
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
-
     // Generate Tiles for each Dino in Array
-
     // Add tiles to DOM
     let grid = this.document.getElementById("grid");
     // loop over tile indexes
-    for (let i = 0; i <= dinos_array.length + 1; i++) {
+    for (let i = 0; i <= dinos_array.length; i++) {
         // middle tile has to be human tile
         if (i === 4) {
             grid.innerHTML += '<div class="grid-item">' + human.name + '<img src=' + human.image + '></div>'
-        }
-        else if (i < 4) {
-            let tile_content = DisplayFacts(dinos_array[i]);
+        } else if (i < 4) {
+            let tile_content = DisplayFacts(dinos_array[i], human);
             grid.innerHTML += '<div class="grid-item">' + tile_content + '<img src=' + dinos_array[i].image + '></div>'
-        }
-        else {
+        } else {
             // specify dinos array index
             let j = i - 1;
-            let tile_content = DisplayFacts(dinos_array[j]);
+            let tile_content = DisplayFacts(dinos_array[j], human);
             grid.innerHTML += '<div class="grid-item">' + tile_content + '<img src=' + dinos_array[j].image + '></div>'
         }
     }
