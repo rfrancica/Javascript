@@ -43,7 +43,7 @@ function DisplayFacts(dinoItem, humanItem) {
         } else if (factKey === 'diet') {
             return compareDiet(dinoItem, humanItem)
         } else {
-            return dinoItem.species + '\n ' + factKey + ': ' + dinoItem[factKey]
+            return factKey + ': ' + dinoItem[factKey]
         }
     }
 }
@@ -187,15 +187,15 @@ function startPipeline() {
     for (let i = 0; i <= dinos_array.length; i++) {
         // middle tile has to be human tile
         if (i === 4) {
-            grid.innerHTML += '<div class="grid-item">' + human.name + '<img src=' + human.image + '></div>'
+            grid.innerHTML += '<div class="grid-item"> <h3>' + human.name + '</h3><img src=' + human.image + '></div>'
         } else if (i < 4) {
             let tile_content = DisplayFacts(dinos_array[i], human);
-            grid.innerHTML += '<div class="grid-item">' + tile_content + '<img src=' + dinos_array[i].image + '></div>'
+            grid.innerHTML += '<div class="grid-item"><h3>' + dinos_array[i].species + '</h3><img src=' + dinos_array[i].image + '>' + `<p>${tile_content}</p>` + '</div>'
         } else {
             // specify dinos array index
             let j = i - 1;
             let tile_content = DisplayFacts(dinos_array[j], human);
-            grid.innerHTML += '<div class="grid-item">' + tile_content + '<img src=' + dinos_array[j].image + '></div>'
+            grid.innerHTML += '<div class="grid-item"><h3>' + dinos_array[j].species + '</h3><img src=' + dinos_array[j].image + '>' + `<p>${tile_content}</p>` + '</div>'
         }
     }
 }
