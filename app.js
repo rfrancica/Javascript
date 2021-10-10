@@ -20,7 +20,6 @@ function compareWeight(dinoItem, humanItem) {
 
 function compareHeight(dinoItem, humanItem) {
     let return_string;
-    let conversionAlpha = 0.0833;
     if (dinoItem.height === humanItem.height) {
         return_string = 'Like you, ' + dinoItem.species + ' is: ' + dinoItem.height + ' feet tall';
     } else {
@@ -29,23 +28,81 @@ function compareHeight(dinoItem, humanItem) {
     return return_string
 }
 
-
-function DisplayFacts(dinoItem, humanItem) {
-    if (dinoItem.species === 'Pigeon') {
-        return "All birds are considered dinosaurs."
+function removeForm() {
+    // Remove form from screen
+    var form = this.document.getElementById("dino-compare");
+    if (form.style.display === "none") {
+        form.style.display = "block";
     } else {
-        let factKeys = ["weight", "height", "diet", "where", "when", "fact"];
-        let factKey = factKeys[Math.floor(Math.random() * factKeys.length)];
-        if (factKey === 'weight') {
-            return compareWeight(dinoItem, humanItem)
-        } else if (factKey === 'height') {
-            return compareHeight(dinoItem, humanItem)
-        } else if (factKey === 'diet') {
-            return compareDiet(dinoItem, humanItem)
+        form.style.display = "none";
+    }
+}
+
+function DinoConstructor(dino) {
+    return {
+        species: dino.species,
+        weight: dino.weight,
+        height: dino.height,
+        diet: dino.diet,
+        where: dino.where,
+        when: dino.when,
+        fact: dino.fact,
+        image: 'images/' + dino.species.toLowerCase().replace(' ', '%20') + '.png'
+    }
+}
+
+function Human(userData) {
+    return {
+        image: 'images/human.png',
+        name: userData.name,
+        height: userData.height,
+        weight: userData.weight,
+        diet: userData.diet
+    }
+}
+
+function GridItem(object) {
+    this.object = object;
+    this.DisplayFacts = function (humanItem) {
+        if (this.object.species === 'Pigeon') {
+            return "All birds are considered dinosaurs."
         } else {
-            return factKey + ': ' + dinoItem[factKey]
+            let factKeys = ["weight", "height", "diet", "where", "when", "fact"];
+            let factKey = factKeys[Math.floor(Math.random() * factKeys.length)];
+            if (factKey === 'weight') {
+                return compareWeight(this.object, humanItem)
+            } else if (factKey === 'height') {
+                return compareHeight(this.object, humanItem)
+            } else if (factKey === 'diet') {
+                return compareDiet(this.object, humanItem)
+            } else {
+                return factKey + ': ' + this.object[factKey]
+            }
         }
     }
+    this.generateHumanHtml = function () {
+        return '<div class="grid-item"> <h3>' + this.object.name + '</h3><img src=' + this.object.image + '></div>'
+    };
+    this.generateDinoHtml = function (human) {
+        let tile_content = this.DisplayFacts(human);
+        return '<div class="grid-item"><h3>' + this.object.species + '</h3><img src=' + this.object.image + '>' + `<p>${tile_content}</p>` + '</div>'
+    }
+}
+
+function generateTiles(dinos_array, grid, human) {
+    // loop over tile indexes
+    for (let i = 0; i <= dinos_array.length; i++) {
+        // middle tile has to be human tile
+        if (i === 4) {
+            grid.innerHTML += new GridItem(human).generateHumanHtml()
+        } else if (i < 4) {
+            grid.innerHTML += new GridItem(dinos_array[i]).generateDinoHtml(human)
+        } else {
+            let j = i - 1;
+            grid.innerHTML += new GridItem(dinos_array[j]).generateDinoHtml(human)
+        }
+    }
+    return grid
 }
 
 function startPipeline() {
@@ -131,7 +188,7 @@ function startPipeline() {
         let name = document.getElementById('name').value;
         let feet = parseFloat(document.getElementById('feet').value);
         let inches = parseFloat(document.getElementById('inches').value);
-        let height = (feet * 12) + inches;
+        let height = (inches * 0.083) + feet;
         let weight = parseFloat(document.getElementById('weight').value);
         let diet = document.getElementById('diet').value;
         return {
@@ -143,59 +200,17 @@ function startPipeline() {
     })();
 
     // Remove form from screen
-    let form = this.document.getElementById("dino-compare");
-    if (form.style.display === "none") {
-        form.style.display = "block";
-    } else {
-        form.style.display = "none";
-    }
-
-    // Create Dino Constructor
-    function DinoConstructor(dino) {
-        return {
-            species: dino.species,
-            weight: dino.weight,
-            height: dino.height,
-            diet: dino.diet,
-            where: dino.where,
-            when: dino.when,
-            fact: dino.fact,
-            image: 'images/' + dino.species.toLowerCase().replace(' ', '%20') + '.png'
-        }
-    }
+    removeForm()
 
     // Create Dino Objects
     let dinos_array = data.Dinos.map(DinoConstructor)
 
     // Create Human Object
-    function Human(userData) {
-        return {
-            image: 'images/human.png',
-            name: userData.name,
-            height: userData.height,
-            weight: userData.weight,
-            diet: userData.diet
-        }
-    }
-
     let human = Human(userData)
 
     // Generate Tiles for each Dino in Array
     // Add tiles to DOM
     let grid = this.document.getElementById("grid");
     // loop over tile indexes
-    for (let i = 0; i <= dinos_array.length; i++) {
-        // middle tile has to be human tile
-        if (i === 4) {
-            grid.innerHTML += '<div class="grid-item"> <h3>' + human.name + '</h3><img src=' + human.image + '></div>'
-        } else if (i < 4) {
-            let tile_content = DisplayFacts(dinos_array[i], human);
-            grid.innerHTML += '<div class="grid-item"><h3>' + dinos_array[i].species + '</h3><img src=' + dinos_array[i].image + '>' + `<p>${tile_content}</p>` + '</div>'
-        } else {
-            // specify dinos array index
-            let j = i - 1;
-            let tile_content = DisplayFacts(dinos_array[j], human);
-            grid.innerHTML += '<div class="grid-item"><h3>' + dinos_array[j].species + '</h3><img src=' + dinos_array[j].image + '>' + `<p>${tile_content}</p>` + '</div>'
-        }
-    }
+    generateTiles(dinos_array, grid, human)
 }
